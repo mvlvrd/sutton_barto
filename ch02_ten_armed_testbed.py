@@ -48,7 +48,7 @@ class BaseBandit:
         if np.random.rand() < self.eps: # explore
             action = np.random.choice(self.possible_actions)
         else:
-            action = np.argmax(self.q_estimate)
+            action = np.random.choice(np.flatnonzero(self.q_estimate == np.max(self.q_estimate)))
         return action
 
     def reward(self, action_idx):
@@ -108,7 +108,7 @@ class UCBBandit(BaseBandit):
         else:  # exploit (eq. 2.8)
             t = np.sum(self.action_count) + 1
             q = self.q_estimate + self.c * np.sqrt(np.log(t) / (self.action_count + 1e-6))
-            action = np.argmax(q)
+            action = np.random.choice(np.flatnonzero(self.q_estimate == np.max(self.q_estimate)))
         return action
 
 
